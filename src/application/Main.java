@@ -5,7 +5,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-
 public class Main {
     private JFrame frame;
     private CardLayout cardLayout;
@@ -15,11 +14,13 @@ public class Main {
     private Image backgroundImage; 
     private ArrayList<Bullet> bullets;
     private GameLoop gameLoop;
+    private GameSettings gameSettings;
     private static final int ENEMY_COUNT = 5;
     private static final int MAP_WIDTH = 1900;
     private static final int MAP_HEIGHT = 1080;
 
     public Main() {
+        gameSettings = new GameSettings(60, 60, 1920, 1080);
         frame = new JFrame("Chicken Invaders");
         
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -37,17 +38,18 @@ public class Main {
         loadBackgroundImage();
 
         // Creat Menu Panel and Game Panel
-        JPanel menuPanel = createMenuPanel();
+//        JPanel menuPanel = createMenuPanel();
         JPanel gamePanel = createGamePanel();
 
-        mainPanel.add(menuPanel, "Menu");
+//        mainPanel.add(menuPanel, "Menu");
+        mainPanel.add(new gui.jPanel.MainMenuJPanel(gameSettings));
         mainPanel.add(gamePanel, "Game");
 
         frame.add(mainPanel);
         frame.setVisible(true);
 
         // Show menu first
-        cardLayout.show(mainPanel, "Menu");
+//        cardLayout.show(mainPanel, "Menu");
         
         gameLoop = new GameLoop(100, this::updateGame, gamePanel::repaint);
     }
@@ -293,6 +295,14 @@ public class Main {
             enemies.add(new Enemy(100, MAP_WIDTH, MAP_HEIGHT));
         }
     }
+    
+    public void setPanel(JPanel p) {
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(p);
+        frame.revalidate();
+        frame.repaint();
+    }
+    
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(Main::new);

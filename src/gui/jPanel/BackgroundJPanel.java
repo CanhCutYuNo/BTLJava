@@ -20,84 +20,35 @@ import javax.swing.JComponent;
  * @author hp
  */
 public class BackgroundJPanel extends javax.swing.JPanel {
-    
+
     private final GameSettings gameSettings;
     private final Thread _updateThread;
     private final Thread _drawThread;
     private final List<Star> synchronizedStars;
     private boolean isRunning = true;
+
     private class Star {
-        
-        public Star(int speed, int x, int y) {
-            this.speed = speed;
+
+        public Star(int x, int y, int width, int height) {
             this.x = x;
             this.y = y;
+            this.width = width;
+            this.height = height;
         }
         
-        private int speed;
-
-        /**
-         * Get the value of speed
-         *
-         * @return the value of speed
-         */
-        public int getSpeed() {
-            return speed;
+        public Star(int x, int y, int edge) {
+            this.x = x;
+            this.y = y;
+            this.width = edge;
+            this.height = edge;
         }
 
-        /**
-         * Set the value of speed
-         *
-         * @param speed new value of speed
-         */
-        public void setSpeed(int speed) {
-            this.speed = speed;
-        }
-        
+        private final int width;
+        private final int height;
         private int x;
-
-        /**
-         * Get the value of x
-         *
-         * @return the value of x
-         */
-        public int getX() {
-            return x;
-        }
-
-        /**
-         * Set the value of x
-         *
-         * @param x new value of x
-         */
-        public void setX(int x) {
-            this.x = x;
-        }
-        
         private int y;
-
-        /**
-         * Get the value of y
-         *
-         * @return the value of y
-         */
-        public int getY() {
-            return y;
-        }
-
-        /**
-         * Set the value of y
-         *
-         * @param y new value of y
-         */
-        public void setY(int y) {
-            this.y = y;
-        }
-        
     }
-    
-    
-    
+
     public BackgroundJPanel(GameSettings gameSettings) {
         this.gameSettings = gameSettings;
         _drawThread = new Thread(() -> {
@@ -107,14 +58,14 @@ public class BackgroundJPanel extends javax.swing.JPanel {
             updateLoop();
         });
         synchronizedStars = Collections.synchronizedList(new LinkedList<Star>());
-                    _drawThread.start();
-            _updateThread.start(); 
+        _drawThread.start();
+        _updateThread.start();
     }
-    
+
     public void Stop() {
         isRunning = false;
     }
-    
+
     private void loop() {
         long currentTime;
         long invokeTime;
@@ -128,7 +79,7 @@ public class BackgroundJPanel extends javax.swing.JPanel {
             invokeTime = currentTime;
         }
     }
-    
+
     private void updateLoop() {
         long currentTime;
         long invokeTime;
@@ -142,11 +93,11 @@ public class BackgroundJPanel extends javax.swing.JPanel {
             invokeTime = currentTime;
         }
     }
-    
+
     private void update() {
         Random random = new Random();
         synchronized (synchronizedStars) {
-            synchronizedStars.add(new Star((random.nextInt() % 5), random.nextInt() % gameSettings.getWidth(), gameSettings.getHeight() + 1));
+            synchronizedStars.add(new Star(random.nextInt() % gameSettings.getWidth(), gameSettings.getHeight() + 1, random.nextInt() % 2 + 2));
             //Complexity: O(n2)
             for (Iterator it = synchronizedStars.iterator(); it.hasNext();) {
                 Star star = (Star) it.next();
@@ -155,12 +106,12 @@ public class BackgroundJPanel extends javax.swing.JPanel {
                     it = synchronizedStars.iterator();
                     continue;
                 }
-                star.y = star.y - Math.abs(star.speed) - 1;
-            }            
+                star.y = star.y - 1;
+            }
         }
-        
+
     }
-    
+
     private void drawLoop() {
         long currentTime;
         long invokeTime;
@@ -173,7 +124,7 @@ public class BackgroundJPanel extends javax.swing.JPanel {
             invokeTime = currentTime;
         }
     }
-    
+
     @Override
     public void paint(Graphics g) {
         g.clearRect(0, 0, gameSettings.getWidth(), gameSettings.getHeight());
@@ -186,9 +137,9 @@ public class BackgroundJPanel extends javax.swing.JPanel {
                 }
                 Star star = (Star) object;
                 g.setColor(Color.WHITE);
-                g.fillOval(star.x, star.y, 3, 3);
-            }            
+                g.fillOval(star.x, star.y, star.width, star.height);
+            }
         }
-        
+
     }
 }
