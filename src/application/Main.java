@@ -43,6 +43,7 @@ public class Main {
 
 //        mainPanel.add(menuPanel, "Menu");
         mainPanel.add(new gui.jPanel.MainMenuJPanel(gameSettings));
+//        mainPanel.add(new gui.jPanel.BackgroundJPanel(gameSettings));
         mainPanel.add(gamePanel, "Game");
 
         frame.add(mainPanel);
