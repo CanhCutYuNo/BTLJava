@@ -5,7 +5,10 @@
 package gui.jPanel;
 
 import application.GameSettings;
-import java.awt.Font;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 /**
  *
  * @author hp
@@ -18,7 +21,6 @@ public class MainMenuJPanel extends javax.swing.JPanel {
         this.gameSettings = gameSettings;
         initComponents();
     }
-
 
     private void initComponents() {
         lineBorder1 = (javax.swing.border.LineBorder) javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0));
@@ -33,6 +35,8 @@ public class MainMenuJPanel extends javax.swing.JPanel {
         button1 = new gui.Button(300, 50);
         buttonPanel2 = new javax.swing.JPanel();
         button2 = new gui.Button(300, 50);
+        buttonPanel3 = new javax.swing.JPanel();
+        button3 = new gui.Button(300, 50);
 
         setLayout(new java.awt.GridLayout(1, 1));
 
@@ -59,10 +63,18 @@ public class MainMenuJPanel extends javax.swing.JPanel {
         containerPanel.add(symbolPanel);
 
         buttonPanel.setOpaque(false);
-        buttonPanel.setLayout(new java.awt.GridLayout(2, 0));
+        buttonPanel.setLayout(new java.awt.GridLayout(3, 1));
 
+        //Button 1
         buttonPanel1.setOpaque(false);
         buttonPanel1.setLayout(new java.awt.GridBagLayout());
+
+        //Button 1 On Clicked Event
+        button1.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
 
         button1.setText("Play");
         button1.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
@@ -70,14 +82,39 @@ public class MainMenuJPanel extends javax.swing.JPanel {
 
         buttonPanel.add(buttonPanel1);
 
+        //Button 2
         buttonPanel2.setOpaque(false);
         buttonPanel2.setLayout(new java.awt.GridBagLayout());
+
+        //Button 2 On Clicked Event
+        button2.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
 
         button2.setText("Settings");
         button2.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
         buttonPanel2.add(button2, new java.awt.GridBagConstraints());
 
         buttonPanel.add(buttonPanel2);
+
+        //Button 3
+        buttonPanel3.setOpaque(false);
+        buttonPanel3.setLayout(new java.awt.GridBagLayout());
+
+        //Button 3 On Clicked Event        
+        button3.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent evt) {
+                throw new UnsupportedOperationException("Not supported yet.");
+            }
+        });
+
+        button3.setText("Quit Game");
+        button3.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 30));
+        buttonPanel3.add(button3, new java.awt.GridBagConstraints());
+
+        buttonPanel.add(buttonPanel3);
 
         containerPanel.add(buttonPanel);
 
@@ -87,13 +124,14 @@ public class MainMenuJPanel extends javax.swing.JPanel {
         add(jLayeredPane);
     }// </editor-fold>                        
 
-    // Variables declaration - do not modify                     
     private javax.swing.JPanel backgroundPanel;
     private gui.Button button1;
     private gui.Button button2;
+    private gui.Button button3;
     private javax.swing.JPanel buttonPanel;
     private javax.swing.JPanel buttonPanel1;
     private javax.swing.JPanel buttonPanel2;
+    private javax.swing.JPanel buttonPanel3;
     private javax.swing.JPanel containerPanel;
     private javax.swing.JLabel icon;
     private javax.swing.JLayeredPane jLayeredPane;
