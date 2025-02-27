@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Player {
+
     private Image spriteSheet;
     private int hp;
     private int damage;
@@ -12,6 +13,10 @@ public class Player {
     private int PosY;
     private static final int MODEL_WIDTH = 64;
     private static final int MODEL_HEIGHT = 64;
+    private long t1, t2;
+    private long x1, x2;
+    private long velocity;
+    private int targetFrame;
 
     private int[][] spriteData = {
         {1, 1135, 104, 114}, {1, 1019, 104, 114}, {1, 903, 104, 114},
@@ -27,8 +32,8 @@ public class Player {
         {351, 1135, 104, 114}, {351, 1019, 104, 114}
     };
 
-    private int curFrame = 16; 
-    private int initialPosX; 
+    private int curFrame = 16;
+    private int initialPosX;
     private boolean moving = false;
 
     // Constructor
@@ -39,7 +44,11 @@ public class Player {
         this.PosX = PosX;
         this.PosY = PosY;
         this.initialPosX = PosX;
-
+        x1 = x2 = PosX;
+        t1 = t2 = System.nanoTime() / 1000000000;
+        velocity = 0;
+        //Method update() is invoked first before updateDirection(...) is called
+        targetFrame = 16;
         try {
             spriteSheet = new ImageIcon(getClass().getResource("/asset/resources/spaceship.png")).getImage();
         } catch (Exception e) {
@@ -49,24 +58,52 @@ public class Player {
     }
 
     // Getter & Setter
-    public int getHp() { return hp; }
-    public void setHp(int hp) { this.hp = hp; }
-    public boolean isDead() { return hp <= 0; }
+    public int getHp() {
+        return hp;
+    }
 
-    public int getDamage() { return damage; }
-    public void setDamage(int damage) { this.damage = damage; }
+    public void setHp(int hp) {
+        this.hp = hp;
+    }
 
-    public double getShootSpeed() { return shootSpeed; }
-    public void setShootSpeed(double shootSpeed) { this.shootSpeed = shootSpeed; }
+    public boolean isDead() {
+        return hp <= 0;
+    }
 
-    public int getPosX() { return PosX; }
-    public void setPosX(int PosX) { this.PosX = PosX; }
+    public int getDamage() {
+        return damage;
+    }
 
-    public int getPosY() { return PosY; }
-    public void setPosY(int PosY) { this.PosY = PosY; }
+    public void setDamage(int damage) {
+        this.damage = damage;
+    }
 
-    
+    public double getShootSpeed() {
+        return shootSpeed;
+    }
+
+    public void setShootSpeed(double shootSpeed) {
+        this.shootSpeed = shootSpeed;
+    }
+
+    public int getPosX() {
+        return PosX;
+    }
+
+    public void setPosX(int PosX) {
+        this.PosX = PosX;
+    }
+
+    public int getPosY() {
+        return PosY;
+    }
+
+    public void setPosY(int PosY) {
+        this.PosY = PosY;
+    }
+
     public void updateDirection(int newX) {
+        /*
         if(newX < initialPosX) {
             moving = true;
             curFrame = Math.max(0, curFrame - 1); // Nghiêng trái
@@ -76,10 +113,24 @@ public class Player {
         } else {
             moving = false;
         }
-        initialPosX = newX;
+         */
+
+        x1 = x2;
+        x2 = PosX;
+        t1 = t2;
+        t2 = System.nanoTime() / 1000000000;
+        velocity = (x2 - x1) / (((t2 - t1) == 0) ? 1 : (t2 - t1));
+        targetFrame = (int) velocity;
+        if (targetFrame > 0) {
+            targetFrame = Math.min(15, targetFrame);
+        } else {
+            targetFrame = Math.max(-16, targetFrame);
+        }
+        targetFrame += 16;
     }
 
     public void update() {
+        /*
         if(!moving && curFrame != 16) {
             if(curFrame < 16) {
                 curFrame++; // Nếu đang nghiêng trái, tăng dần về 16
@@ -87,15 +138,24 @@ public class Player {
                 curFrame--; // Nếu đang nghiêng phải, giảm dần về 16
             }
         }
+         */
+
+        if (curFrame > targetFrame) {
+            curFrame--;
+        } else if (curFrame < targetFrame) {
+            curFrame++;
+        }
+        // if curFrame == targetFrame -> curFrame dont change
+
     }
 
     public void render(Graphics g) {
-        if(spriteSheet != null) {
+        if (spriteSheet != null) {
             int[] data = spriteData[curFrame];
             int sx = data[0], sy = data[1], sw = data[2], sh = data[3];
 
             g.drawImage(spriteSheet, PosX, PosY, PosX + MODEL_WIDTH, PosY + MODEL_HEIGHT,
-                        sx, sy, sx + sw, sy + sh, null);
+                    sx, sy, sx + sw, sy + sh, null);
         } else {
             g.setColor(Color.RED);
             g.fillRect(PosX, PosY, MODEL_WIDTH, MODEL_HEIGHT);
