@@ -1,5 +1,6 @@
 package application.Controllers;
 
+import application.App;
 import application.Models.*;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -12,7 +13,8 @@ public class Manager {
     private ArrayList<Bullet> bullets;
     private ArrayList<Enemy> enemies;
     private CardLayout cardLayout;
-	private JPanel mainPanel;
+    private JPanel mainPanel;
+    private App app;
 
     public Manager(CardLayout _cardLayout, JPanel _mainPanel) {
         bullets = new ArrayList<>();
@@ -21,6 +23,14 @@ public class Manager {
         this.cardLayout = _cardLayout;
 		this.mainPanel = _mainPanel;
     }
+    
+    public Manager(App app, JPanel _mainPanel) {
+        this.app = app;
+        bullets = new ArrayList<>();
+        enemies = new ArrayList<>();
+        player = new Player(100, 10, 1.0, 950, 540);
+		this.mainPanel = _mainPanel;
+    }    
 
     public void update() {
         // Cập nhật đạn
@@ -79,7 +89,12 @@ public class Manager {
                 	 player.setPosY(950);
                 	 bullets.clear();
                 	 spawnEnemies();
-                	 cardLayout.show(mainPanel, "Menu");
+                        if(cardLayout != null){
+                            cardLayout.show(mainPanel, "Menu");
+                        }
+                        else if(app != null){
+                            app.navigateToMainMenu();
+                        }
                      break;
                  }
              }

@@ -1,5 +1,6 @@
 package application.Controllers;
 
+import application.App;
 import java.awt.event.*;
 import java.awt.*;
 import javax.swing.*;
@@ -12,10 +13,17 @@ public class Controller extends KeyAdapter {
 	private JFrame main;
 	private CardLayout cardLayout;
 	private JPanel mainPanel;
+        private App app;
 	
 	public Controller(JFrame _main, CardLayout _cardLayout, JPanel _mainPanel) {
 		this.main = _main;
 		this.cardLayout = _cardLayout;
+		this.mainPanel = _mainPanel;
+	}
+        
+        public Controller(JFrame _main, App app, JPanel _mainPanel) {
+		this.main = _main;
+                this.app = app;
 		this.mainPanel = _mainPanel;
 	}
 	
@@ -30,10 +38,13 @@ public class Controller extends KeyAdapter {
 	                );
 	                
 	                if(res == JOptionPane.YES_OPTION) {
-	                	cardLayout.show(mainPanel, "Menu");
+                            if(cardLayout != null){
+                                cardLayout.show(mainPanel, "Menu");
+                            }
+                            else if(app != null){
+                                app.navigateToMainMenu();
+                            }
 	                }
 	        }
 	    }
-	 
-	
 }
