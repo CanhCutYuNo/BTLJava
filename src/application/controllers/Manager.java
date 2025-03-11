@@ -106,6 +106,15 @@ public class Manager {
         checkBulletEnemyCollisions();
         checkPlayerCollisionsWithEnemies();
         checkPlayerCollisionsWithEgg();
+        
+        //Xoa khi enemy.hp <= 0;
+        ArrayList<Enemy> enemiesToRemove = new ArrayList<>();
+        for(Enemy enemy : enemies) {
+            if(enemy.getHp() <= 0){
+                enemiesToRemove.add(enemy);
+            }
+        }        
+        enemies.removeAll(enemiesToRemove);
 
         if(enemies.isEmpty()) {
             level++;
@@ -226,7 +235,8 @@ public class Manager {
         else if(level ==3){
             enemies = new Level3Manager().getEnemies();
 //
-        }
+        }   
+        enemies = new TestLevelManager().getEnemies();
     }
 
     public void render(Graphics g) {

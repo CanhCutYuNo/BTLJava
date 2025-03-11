@@ -8,9 +8,9 @@ import java.awt.Image;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
-public class Level1Manager extends LevelManager {
+public class TestLevelManager extends LevelManager {
 
-    public Level1Manager() {
+    public TestLevelManager() {
         super();
     }
 
@@ -27,32 +27,6 @@ public class Level1Manager extends LevelManager {
                 enemies.add(new SmokeTestEnemy(posX, posY));
             }
             posY += 200;
-        }
-    }
-
-    private class ChickenEnemyLvl1 extends ChickenEnemy {
-        private boolean movingRight;
-        private int speed;
-
-        public ChickenEnemyLvl1(int PosX, int PosY) {
-            super(PosX, PosY);
-            movingRight = true;
-            speed = 2;
-        }
-
-        @Override
-        public void update() {
-            if (movingRight) {
-                PosX += speed;
-                if (PosX >= MAP_WIDTH - MODEL_WIDTH) {
-                    movingRight = false;
-                }
-            } else {
-                PosX -= speed;
-                if (PosX <= 0) {
-                    movingRight = true;
-                }
-            }
         }
     }
 
